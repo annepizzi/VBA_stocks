@@ -1,0 +1,170 @@
+Sub StockMarket():
+'create variable to hold worksheet name
+Dim WorksheetName As String
+'Set a variable for holding Yearly Change
+Dim YearlyChange As Double
+'Set a variable for holding Percent Change
+Dim PercentChange As Double
+'Set an variable for holding Ticker Name
+Dim Ticker As String
+'set a variable for total stock volumn
+Dim TSV As Double
+'keep track of the location for each tracker for rows
+Dim SumStat As Integer
+'keep track of year open and year closed
+Dim YearOpen As Double
+Dim YearClosed As Double
+'set variable to set against for greatest increase/decrease and greatest TSV
+Dim GreatestTSV As Double
+Dim GreatestYearlyIn As Double
+Dim GreatestYearlyDec As Double
+'set a holder for YearOpen value to change in each loop
+Dim j As Long
+'set value for greatest increase
+Dim k As Double
+
+For Each ws In Worksheets
+
+'the variable will be set to zero to start and set SumStat to row 2
+TSV = 0
+Ticker = ""
+YearlyChange = 0
+PercentChange = 0
+SumStat = 2
+
+'set j as a holder for YearOpen value to change with each loop
+j = 2
+
+'Find the last non-blank cell in column A
+LastRowA = Cells(Rows.Count, 1).End(xlUp).Row
+
+'set the header for each worksheet
+ws.Cells(1, 9).Value = "Ticker"
+ws.Cells(1, 10).Value = "Yearly Change"
+ws.Cells(1, 11).Value = "Percent Change"
+ws.Cells(1, 12).Value = "Total Stock Value"
+ws.Cells(1, 16).Value = "Ticker"
+ws.Cells(1, 17).Value = "Value"
+ws.Cells(2, 15).Value = "Greatest % Increase"
+ws.Cells(3, 15).Value = "Greatest % Decrease"
+ws.Cells(4, 15).Value = "Greatest Total Volume"
+        
+'for summary table rows 2 to end of row A
+For i = 2 To LastRowA
+
+'check to see if the values are still in the ticker value, if row cell value after the 1 is not equal
+If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
+
+'find the value of the cell ticker name
+Ticker = ws.Cells(i, 1).Value
+
+'find the amount of the total stock value
+TSV = TSV + ws.Cells(i, 7).Value
+
+'calculate the Year closed
+YearClosed = ws.Cells(i, 6).Value
+
+'calculate the Year open
+YearOpen = ws.Cells(j, 3).Value
+
+'calculate the yearly change
+YearlyChange = YearClosed - YearOpen
+
+'calculate the percent change
+PercentChange = YearlyChange / YearOpen * 100
+
+'column G and the row 2 will hold the value of the ticker name
+ws.Range("I" & SumStat).Value = Ticker
+
+'column H and row 2 will hold the value of the amount
+ws.Range("L" & SumStat).Value = TSV
+
+'column H and row 2 will hold the value of the amount
+ws.Range("J" & SumStat).Value = YearlyChange
+
+'column H and row 2 will hold the value of the amount
+ws.Range("K" & SumStat).Value = PercentChange
+
+'format for conditional (nested If statement )
+If YearlyChange < 0 Then
+
+'set to red if below 0
+ws.Range("J" & SumStat).Interior.ColorIndex = 3
+
+'set to green if above 0
+ElseIf YearlyChange > 0 Then
+ws.Range("J" & SumStat).Interior.ColorIndex = 4
+
+Else
+
+'set to yellow if else
+ws.Range("J" & SumStat).Interior.ColorIndex = 6
+
+End If
+
+'after this completes from row 2, it will move to the next row, you have to increase the row value
+SumStat = SumStat + 1
+
+'reset the values
+TSV = 0
+Ticker = ""
+YearlyChange = 0
+PercentChange = 0
+
+'change the open price holder value for the next loop
+j = i + 1
+
+Else
+TSV = TSV + Cells(i, 7).Value
+
+End If
+
+Next i
+
+'set greatest stock volume, greatest % increase, and greatest % decrease
+GreatestYearlyIn = ws.Cells(2, 11).Value
+GreatestYearlyDec = ws.Cells(2, 11).Value
+GreatestTSV = ws.Cells(2, 12).Value
+
+'create loop
+LastRowI = ws.Cells(Rows.Count, 9).End(xlUp).Row
+
+For i = 2 To LastRowI
+
+'set for greatest decrease
+If ws.Cells(i, 11).Value < GreatlyYearlyDec Then
+GreatestYearlyDec = ws.Cells(i, 11).Value
+ws.Cells(3, 16) = ws.Cells(i, 9).Value
+Else
+
+End If
+
+'set greatest percent increase
+If ws.Cells(i, 11).Value > GreatestYearlyIn Then
+GreatestYearlyIn = ws.Cells(i, 11).Value
+ws.Cells(2, 16).Value = ws.Cells(i, 9).Value
+
+Else
+
+End If
+
+'set greatest STV
+If ws.Cells(i, 12).Value > GreatestTSV Then
+GreatestTSV = ws.Cells(i, 12).Value
+ws.Cells(4, 16).Value = ws.Cells(i, 9).Value
+
+Else
+
+End If
+'add the values into the cells
+ws.Cells(2, 17).Value = GreatestYearlyIn
+ws.Cells(3, 17).Value = GreatestYearlyDec
+ws.Cells(4, 17).Value = GreatestTSV
+
+Next i
+
+Next ws
+
+End Sub
+
+
