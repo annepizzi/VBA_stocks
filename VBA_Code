@@ -20,8 +20,6 @@ Dim GreatestYearlyIn As Double
 Dim GreatestYearlyDec As Double
 'set a holder for YearOpen value to change in each loop
 Dim j As Long
-'set value for greatest increase
-Dim k As Double
 
 For Each ws In Worksheets
 
