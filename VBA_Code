@@ -71,16 +71,16 @@ YearlyChange = YearClosed - YearOpen
 'calculate the percent change
 PercentChange = YearlyChange / YearOpen * 100
 
-'column G and the row 2 will hold the value of the ticker name
+'column I and the row 2 will hold the value of the ticker name
 ws.Range("I" & SumStat).Value = Ticker
 
-'column H and row 2 will hold the value of the amount
+'column L and row 2 will hold the value of the amount
 ws.Range("L" & SumStat).Value = TSV
 
-'column H and row 2 will hold the value of the amount
+'column J and row 2 will hold the value of the amount
 ws.Range("J" & SumStat).Value = YearlyChange
 
-'column H and row 2 will hold the value of the amount
+'column K and row 2 will hold the value of the amount
 ws.Range("K" & SumStat).Value = PercentChange
 
 'format for conditional (nested If statement )
